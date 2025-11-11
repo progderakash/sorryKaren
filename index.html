@@ -118,13 +118,21 @@
         const btn=document.createElement('button');
         btn.className='forgive';
         btn.innerText='Forgive me, Karen 💖';
-        btn.addEventListener('click', () => {
-    btn.remove(); // hides the button
-    const message = document.createElement('div');
-    message.innerHTML = '<strong>Thank you, Karen. I will spend every day proving my love for you. ❤️</strong>';
-    bubble.appendChild(message);
-});
         
+        btn.addEventListener('click', () => {
+    const message = document.createElement('div');
+    message.innerHTML = '<strong>Thank you, Baby. I will spend every day proving my love for you. ❤️</strong>';
+    
+    // Optional: fade animation
+    message.style.opacity = '0';
+    bubble.appendChild(message);
+
+    setTimeout(() => {
+        message.style.transition = 'opacity 1s ease';
+        message.style.opacity = '1';
+    }, 50);
+});
+
 
         const prev=bubble.querySelector('button');if(prev)prev.remove();
         bubble.appendChild(document.createElement('div')).style.height='8px';
