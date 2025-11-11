@@ -118,6 +118,13 @@
         const btn=document.createElement('button');
         btn.className='forgive';
         btn.innerText='Forgive me, Karen 💖';
+        btn.addEventListener('click', () => {
+    btn.remove(); // hides the button
+    const message = document.createElement('div');
+    message.innerHTML = '<strong>Thank you, Karen. I will spend every day proving my love for you. ❤️</strong>';
+    bubble.appendChild(message);
+});
+        
         btn.addEventListener('click',()=>{
           bubble.innerHTML='<strong>Thank you, Karen. I will spend every day proving my love to you.</strong>';
         });
