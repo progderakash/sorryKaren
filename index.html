@@ -98,6 +98,7 @@
       const left=Math.random()*92+'%';
       const top=15+Math.random()*60+'%';
       s.style.left=left;s.style.top=top;s.style.pointerEvents='auto';
+      s.style.color="red";
       s.addEventListener('click',()=>showMessage(i,s));
       playArea.appendChild(s);
     }
