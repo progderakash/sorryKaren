@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>Sorry Karen❣️</title>
+  <style>
+    html,body{height:100%;margin:0;padding:0;font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    body{
+      background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
+      background-size:cover;
+      color:#fff;overflow:hidden;
+    }
+
+    .overlay{position:fixed;inset:0;background:rgba(5,10,25,0.6);z-index:0;}
+
+    .sky{position:relative;width:100%;height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:20px;box-sizing:border-box;z-index:1;}
+
+    .moon{position:absolute;right:12%;top:8%;width:110px;height:110px;border-radius:50%;background:linear-gradient(145deg,#f7f5e6,#e6e2c8);box-shadow:0 0 40px rgba(255,240,200,0.12), inset -8px -8px 18px rgba(0,0,0,0.12)}
+
+    .title{position:relative;z-index:5;text-align:center;margin-top:12vh}
+    .title h1{font-size:28px;margin:0 0 6px 0;letter-spacing:0.8px;text-shadow:0 0 12px rgba(255,255,255,0.4)}
+    .title p{margin:0;font-size:14px;opacity:0.85}
+
+    .star{position:absolute;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #fff, #ffe9b6 40%, rgba(255,200,150,0.12));box-shadow:0 0 10px rgba(255,220,180,0.12);transform:translate(-50%,-50%) scale(0.85);opacity:0.95}
+    .star.small{width:6px;height:6px}
+    .star.tiny{width:3px;height:3px}
+
+    .play-area{position:relative;z-index:4;width:100%;max-width:760px;height:56vh;display:flex;align-items:center;justify-content:center}
+
+    .bubble{position:fixed;left:50%;transform:translateX(-50%);bottom:8vh;width:88%;max-width:420px;background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));backdrop-filter:blur(6px);color:#fff;border-radius:16px;padding:18px 18px;box-shadow:0 8px 30px rgba(0,0,0,0.5);text-align:center;font-size:16px;opacity:0;pointer-events:none}
+    .bubble.show{opacity:1;transition:opacity .5s ease, transform .45s cubic-bezier(.2,.9,.2,1);transform:translateX(-50%) translateY(-6px)}
+
+    .forgive{margin-top:12px;background:linear-gradient(90deg,#ff8ab6,#ff6a88);border:none;padding:10px 16px;border-radius:12px;font-weight:600;cursor:pointer;box-shadow:0 6px 18px rgba(255,100,140,0.14)}
+
+    .hint{position:fixed;left:50%;transform:translateX(-50%);bottom:2vh;font-size:12px;opacity:.9}
+
+    .music-control{position:fixed;left:16px;top:16px;z-index:6;background:rgba(0,0,0,0.35);backdrop-filter:blur(4px);padding:8px 10px;border-radius:12px;display:flex;gap:8px;align-items:center}
+    .music-control button{background:transparent;border:1px solid rgba(255,255,255,0.12);color:#fff;padding:6px 8px;border-radius:10px;cursor:pointer}
+
+    @media (max-width:480px){.moon{width:82px;height:82px} .bubble{font-size:15px;padding:14px}}
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="sky" role="main">
+    <div class="moon" aria-hidden="true"></div>
+    <div class="title">
+      <h1>Sorry Karen ❣️😔</h1>
+      <p>Tap the stars. Each one holds a piece of my heart and an apology.</p>
+    </div>
+
+    <div class="play-area" id="playArea" aria-label="Star field interactive area"></div>
+
+    <div class="bubble" id="bubble" aria-live="polite"></div>
+
+    
+
+  <audio id="bgMusic" loop crossorigin="anonymous">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_f82a234b6c.mp3?filename=beautiful-piano-melody-11268.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="music-control" id="musicControl">
+    <button id="playBtn">Play Music ♫</button>
+    <button id="muteBtn">Mute</button>
+  </div>
+
+  <script>
+    const messages = [
+      "Hey Karen — the night feels empty without your smile.",
+      "Every star is a sorry whispered from my heart.",
+      "I never meant to hurt you. My intentions are never bad for you.",
+      "I miss your laughter, I miss our quiet talks.",
+      "Please forgive the mistake; I promise to learn and grow.",
+      "If I could gather all the stars, I'd trade them for your forgiveness.",
+      "I'm sorry for the silence I let grow between us.",
+      "You deserve gentle words and kind actions — I will be better.",
+      "You are the moon to my ocean — I get pulled to you even when I stray.",
+      "Karen, I love you more than this apology can contain. Please come back to me.",
+      "I will hold your heart carefully; I never meant to bruise it.",
+      "Thank you for the patience you've shown — I don't take it for granted.",
+      "If love is a sky, I want to repaint it with care and truth.",
+      "Forgive me and let me show you how much you mean to me.",
+      "I am sorry. My intentions are never bad for you — only love."
+    ];
+
+    const playArea=document.getElementById('playArea');
+    const bubble=document.getElementById('bubble');
+    const music=document.getElementById('bgMusic');
+    const playBtn=document.getElementById('playBtn');
+    const muteBtn=document.getElementById('muteBtn');
+
+    const starCount=14;
+    for(let i=0;i<starCount;i++){
+      const s=document.createElement('div');
+      s.className='star';
+      if(Math.random()>.8)s.classList.add('tiny');else if(Math.random()>.6)s.classList.add('small');
+      const left=Math.random()*92+'%';
+      const top=15+Math.random()*60+'%';
+      s.style.left=left;s.style.top=top;s.style.pointerEvents='auto';
+      s.addEventListener('click',()=>showMessage(i,s));
+      playArea.appendChild(s);
+    }
+
+    const styleEl=document.createElement('style');
+    styleEl.innerHTML='@keyframes twinkle{from{transform:scale(.85);filter:brightness(0.9)}to{transform:scale(1.28);filter:brightness(1.2)}}';
+    document.head.appendChild(styleEl);
+
+    function showMessage(i,starEl){
+      const idx=i%messages.length;
+      bubble.innerHTML=`<strong>${messages[idx]}</strong>`;
+      starEl.style.boxShadow='0 0 20px rgba(255,200,220,0.95), 0 0 40px rgba(255,120,180,0.18)';
+      starEl.style.transform='scale(1.5)';
+      setTimeout(()=>{starEl.style.transform='scale(1)';starEl.style.boxShadow='0 0 10px rgba(255,220,180,0.12)';},900);
+      bubble.classList.remove('show');
+      setTimeout(()=>bubble.classList.add('show'),50);
+      if(idx===messages.length-1){
+        const btn=document.createElement('button');
+        btn.className='forgive';
+        btn.innerText='Forgive me, Karen 💖';
+        btn.addEventListener('click',()=>{
+          bubble.innerHTML='<strong>Thank you, Karen. I will spend every day proving my love to you.</strong>';
+        });
+        const prev=bubble.querySelector('button');if(prev)prev.remove();
+        bubble.appendChild(document.createElement('div')).style.height='8px';
+        bubble.appendChild(btn);
+      }
+    }
+
+    let isPlaying=false;let isMuted=false;
+    playBtn.addEventListener('click',async()=>{
+      try{
+        if(!isPlaying){await music.play();isPlaying=true;playBtn.innerText='Pause Music ♫';}
+        else{music.pause();isPlaying=false;playBtn.innerText='Play Music ♫';}
+      }catch(err){alert('Music could not start automatically. Please tap Play again.');}
+    });
+
+    muteBtn.addEventListener('click',()=>{isMuted=!isMuted;music.muted=isMuted;muteBtn.innerText=isMuted?'Unmute':'Mute';});
+  </script>
+</body>
+</html>
