@@ -125,9 +125,7 @@
     bubble.appendChild(message);
 });
         
-        btn.addEventListener('click',()=>{
-          bubble.innerHTML='<strong>Thank you, Karen. I will spend every day proving my love to you.</strong>';
-        });
+
         const prev=bubble.querySelector('button');if(prev)prev.remove();
         bubble.appendChild(document.createElement('div')).style.height='8px';
         bubble.appendChild(btn);
